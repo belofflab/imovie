@@ -37,7 +37,7 @@ class LostFilm(object):
     def link_changer(self, old_link: str) -> str:
         splitted_link = old_link.split('.')[0]
 
-        to_change = f'https://{self.date.day}{self.monthes[self.date.month]}'
+        to_change = f'https://{self.date.day+1}{self.monthes[self.date.month]}'
 
         return old_link.replace(splitted_link, to_change)
 
