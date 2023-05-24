@@ -86,7 +86,7 @@ async def choose_movie_keyboard(year: str, genre: str, current_page: str = '1') 
     movies = await models.Movie.query.where(and_(
             models.Movie.genres.contains(genre),
             models.Movie.year == year
-        )).gino.all()
+        )).order_by(models.Movie.rate).gino.all()
     MAX_ITEMS_PER_PAGE=20
     MAX_PAGES = math.ceil(len(movies)/MAX_ITEMS_PER_PAGE)
     next_page = movies[(current_page*MAX_ITEMS_PER_PAGE)-MAX_ITEMS_PER_PAGE:current_page*MAX_ITEMS_PER_PAGE]

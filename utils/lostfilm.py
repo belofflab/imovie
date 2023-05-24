@@ -62,7 +62,7 @@ class LostFilm(object):
 
         return {
                 'finfo':self.parse_finfo(soup.select_one('ul#finfo').text if soup.select_one('ul#finfo') is not None else "Жанр: -\nСтрана: -\nОзвучка: -"),
-                'description': soup.select_one('div#serial-kratko').text if soup.select_one('div#serial-kratko') is not None else '',
+                'description': soup.select_one('div#serial-kratko').text if soup.select_one('div#serial-kratko') is not None else '-',
                 'rate': soup.select_one('span.rat-imdb').text if soup.select_one('span.rat-imdb') is not None else '0.0'
             }
     
