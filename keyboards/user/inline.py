@@ -126,8 +126,9 @@ async def show_movie_keyboard(year: str,genre: str, page: str, movie: str) -> In
     CURRENT_LEVEL = 3
     markup = InlineKeyboardMarkup()
     movie = await models.Movie.query.where(models.Movie.idx == int(movie)).gino.first()
+    from utils.lostfilm import LostFilm
     buttons = [
-        {'text': 'Смотреть', 'url': movie.href},
+        {'text': 'Смотреть', 'url': LostFilm().link_changer(movie.href)},
         # {'text': 'Назад', 'callback_data': make_movies_cd(level=CURRENT_LEVEL - 1, genre=genre, page=page)}
     ]
     for button in buttons:

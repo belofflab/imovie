@@ -33,6 +33,13 @@ class LostFilm(object):
                 'accept-language': 'ru-RU,ru;q=0.9,en-US;q=0.8,en;q=0.7',
         }
         self.available_years = [f"{year}" for year in range(2019, 2024)]
+    
+    def link_changer(self, old_link: str) -> str:
+        splitted_link = old_link.split('.')[0]
+
+        to_change = f'https://{self.date.day}{self.monthes[self.date.month]}'
+
+        return old_link.replace(splitted_link, to_change)
 
     def _send_req(self,qurl: str):
         return self.session.get(
