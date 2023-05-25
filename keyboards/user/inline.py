@@ -15,7 +15,7 @@ async def menu_keyboard() -> InlineKeyboardMarkup:
 
     movies = len(await models.Movie.query.gino.all())
     buttons = [
-        {'text': f'Сериалы ({movies})', 'callback_data': make_movies_cd(level=0)}
+        {'text': f'Фильмы/Сериалы ({movies})', 'callback_data': make_movies_cd(level=0)}
     ]
 
     for button in buttons:
