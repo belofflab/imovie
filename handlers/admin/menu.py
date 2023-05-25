@@ -23,6 +23,6 @@ async def fillgenre(message: types.Message) -> None:
             name=genre
         )
 
-    for year in range(2019, 2023+1):
-        await lf.get_novelties(year=str(year))
+    # for year in range(2019, 2023+1):
+    #     await lf.get_novelties(year=str(year))
     await message.answer('Success')

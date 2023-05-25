@@ -3,6 +3,7 @@ from data.config import MEDIA_URL
 from database import models
 from keyboards.user import inline
 from loader import dp
+from utils import emojify_country
 
 async def get_or_create_user(user_id: int, username: str) -> models.User:
     user = await models.User.query.where(models.User.idx == user_id).gino.first()
@@ -32,6 +33,8 @@ async def list_movies(callback: types.CallbackQuery, year, genre, page, **kwargs
         text="Выберите фильм: ",
         reply_markup=markup
     )
+
+
 async def show_movie(callback: types.CallbackQuery,year, genre, page, movie) -> None:
     markup = await inline.show_movie_keyboard(year=year, genre=genre, page=page, movie=movie)
 
@@ -46,7 +49,7 @@ async def show_movie(callback: types.CallbackQuery,year, genre, page, movie) -> 
 <b>{q_movie.description}</b>
 
 <b>Рейтинг (imdb):</b> {q_movie.rate}
-<b>Страна:</b> {q_movie.country}
+<b>Страна:</b> {emojify_country.go(q_movie.country)}
 <b>Озвучка:</b> {q_movie.voiced_by}
     """,
             reply_markup=markup

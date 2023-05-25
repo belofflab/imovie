@@ -164,6 +164,7 @@ dmypy.json
 
 media/*
 !media/__init__.py
+!media/country.json
 
 # Pyre type checker
 .pyre/

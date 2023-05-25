@@ -1,16 +1,17 @@
 from aiogram import types 
 from loader import dp, bot
 from database import models
-from utils.lostfilm import LostFilm
 from sqlalchemy import or_
-lf = LostFilm()
+
+from utils import emojify_country
+
 
 
 async def answer_movies(query: types.InlineQuery,bot_info, movies: list):
     await query.answer(
             results=[types.InlineQueryResultArticle(
                 id=movie.idx,
-                title=f"{movie.title} ({movie.rate}⭐️) ({movie.country})",
+                title=f"{movie.title} ({movie.rate}⭐️) ({emojify_country.go(movie.country)})",
                 description=movie.genres,
                 thumb_url="https://belofflab.com/static/vpn/img/video-camera.png",
                 input_message_content=types.InputTextMessageContent(
