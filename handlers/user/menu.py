@@ -40,13 +40,14 @@ async def show_movie(callback: types.CallbackQuery,year, genre, page, movie) -> 
         await callback.message.answer_photo(
             photo=types.InputFile(MEDIA_URL / q_movie.preview),
             caption=f"""
-Фильм: <code>{q_movie.title}</code>
+<b>Фильм:</b> <code>{q_movie.title}</code>
+<b>Жанр:</b> {q_movie.genres}
 
 <b>{q_movie.description}</b>
 
-Рейтинг (imdb): {q_movie.rate}
-Страна: {q_movie.country}
-Озвучка: {q_movie.voiced_by}
+<b>Рейтинг (imdb):</b> {q_movie.rate}
+<b>Страна:</b> {q_movie.country}
+<b>Озвучка:</b> {q_movie.voiced_by}
     """,
             reply_markup=markup
         )
