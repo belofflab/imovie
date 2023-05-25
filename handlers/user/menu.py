@@ -36,9 +36,10 @@ async def show_movie(callback: types.CallbackQuery,year, genre, page, movie) -> 
     markup = await inline.show_movie_keyboard(year=year, genre=genre, page=page, movie=movie)
 
     q_movie = await models.Movie.query.where(models.Movie.idx == int(movie)).gino.first()
-    await callback.message.answer_photo(
-        photo=types.InputFile(MEDIA_URL / q_movie.preview),
-        caption=f"""
+    if isinstance(callback, types.CallbackQuery):
+        await callback.message.answer_photo(
+            photo=types.InputFile(MEDIA_URL / q_movie.preview),
+            caption=f"""
 Фильм: <code>{q_movie.title}</code>
 
 <b>{q_movie.description}</b>
@@ -46,10 +47,35 @@ async def show_movie(callback: types.CallbackQuery,year, genre, page, movie) -> 
 Рейтинг (imdb): {q_movie.rate}
 Страна: {q_movie.country}
 Озвучка: {q_movie.voiced_by}
-    
-""",
-        reply_markup=markup
-    )
+    """,
+            reply_markup=markup
+        )
+    elif isinstance(callback, types.Message):
+        await callback.answer_photo(
+            photo=types.InputFile(MEDIA_URL / q_movie.preview),
+            caption=f"""
+Фильм: <code>{q_movie.title}</code>
+
+<b>{q_movie.description}</b>
+
+Рейтинг (imdb): {q_movie.rate}
+Страна: {q_movie.country}
+Озвучка: {q_movie.voiced_by}        
+    """,
+            reply_markup=markup
+        )
+
+async def proceed_command_on_start(message: types.Message):
+    command = message.text.split(' ')
+    if not len(command) == 1:
+        try:
+            movie_id = int(command[1].split('watch')[-1])
+            movie = await models.Movie.query.where(models.Movie.idx == movie_id).gino.first()
+            await show_movie(callback=message, year=movie.year,page=1, genre=movie.genres, movie=movie.idx)
+        except ValueError:
+            await message.answer('Не найдено...') 
+        except KeyError:
+            pass 
 
 @dp.message_handler(commands='start')
 async def start(message:types.Message) -> None:
@@ -57,6 +83,7 @@ async def start(message:types.Message) -> None:
         user_id=message.from_user.id,
         username=message.from_user.username
     )
+    await proceed_command_on_start(message=message)
     markup = await inline.menu_keyboard()
     await message.answer(f'Добро пожаловать, {message.from_user.full_name}!', reply_markup=markup)
 
